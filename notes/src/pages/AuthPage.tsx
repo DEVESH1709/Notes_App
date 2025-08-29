@@ -1,9 +1,9 @@
 import { useState } from "react";
 import SignupForm from "../components/SignupForm";
 import OTPForm from "../components/OTPForm";
-import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { GoogleLogin, CredentialResponse} from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
-import api from "../api";
+import api from "./api";
 
 const AuthPage = () => {
   const [step, setStep] = useState<"signup" | "otp">("signup");

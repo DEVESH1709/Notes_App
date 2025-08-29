@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import NoteItem from '../components/NoteItem';
 
-const Dashboard: React.FC = () => {
+const Dashboard = () => {
   const [notes, setNotes] = useState<{ _id: string, content: string }[]>([]);
   const [newNote, setNewNote] = useState('');
   const navigate = useNavigate();

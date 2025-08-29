@@ -1,13 +1,15 @@
 
 import './App.css'
+import { Routes,Route } from 'react-router-dom'
 
 function App() {
 
 
   return (
-    <>
-      <h1 className="text-5xl bg-orange-500">Devesh</h1>
-    </>
+    <Routes>
+      <Route path = "/" element = {<AuthPage></AuthPage>}></Route>
+      <Route path = "/dashboard" element={<DashboardPage></DashboardPage>}></Route>
+    </Routes>
   )
 }
 

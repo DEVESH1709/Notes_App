@@ -1,3 +1,4 @@
+import { RiDeleteBin6Line } from "react-icons/ri";
 interface Props {
   note: { _id: string; content: string };
   onDelete: (id: string) => void;
@@ -11,7 +12,7 @@ const NoteItem = ({ note, onDelete }: Props) => {
         onClick={() => onDelete(note._id)}
         className="ml-4 px-3 py-1 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition"
       >
-        Delete
+      <RiDeleteBin6Line />
       </button>
     </li>
   );

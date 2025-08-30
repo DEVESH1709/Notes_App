@@ -10,14 +10,16 @@ const AuthPage = () => {
   const [step, setStep] = useState<"signup" | "otp">("signup");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [dob, setDob] = useState("");
   const navigate = useNavigate();
 
 
-  const handleSignup = async (email: string, name: string) => {
+  const handleSignup = async (email: string, name:string, dob:string) => {
     try {
-      await api.post("/auth/request-otp", { email, name });
+      await api.post("/api/auth/request-otp", { email, name, dob });
       setEmail(email);
       setName(name);
+      setDob(dob);
       setStep("otp");
     } catch (err: any) {
       alert(err.response?.data?.message || "Error requesting OTP");
@@ -26,7 +28,7 @@ const AuthPage = () => {
 
   const handleVerify = async (otp: string) => {
     try {
-      const res = await api.post("/auth/verify-otp", { email, otp });
+      const res = await api.post("api/auth/verify-otp", { email, otp });
       localStorage.setItem("token", res.data.token);
       navigate("/dashboard");
     } catch (err: any) {
@@ -37,7 +39,7 @@ const AuthPage = () => {
   const handleGoogleSuccess = async (credentialResponse: CredentialResponse) => {
     if (credentialResponse.credential) {
       try {
-        const res = await api.post("/auth/google-login", {
+        const res = await api.post("/api/auth/google-login", {
           tokenId: credentialResponse.credential,
         });
         localStorage.setItem("token", res.data.token);

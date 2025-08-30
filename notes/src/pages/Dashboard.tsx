@@ -19,7 +19,7 @@ const Dashboard = () => {
 
   const fetchNotes = async () => {
     try {
-      const res = await api.get('/notes');
+      const res = await api.get('/api/notes');
       setNotes(res.data);
     } catch (err) {
       console.error(err);
@@ -29,7 +29,7 @@ const Dashboard = () => {
   const handleCreateNote = async () => {
     if (!newNote.trim()) return;
     try {
-      const res = await api.post('/notes', { content: newNote });
+      const res = await api.post('/api/notes', { content: newNote });
       setNotes([res.data, ...notes]);
       setNewNote('');
     } catch (err: any) {
@@ -39,7 +39,7 @@ const Dashboard = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      await api.delete(`/notes/${id}`);
+      await api.delete(`/api/notes/${id}`);
       setNotes(notes.filter(note => note._id !== id));
     } catch (err: any) {
       alert(err.response?.data?.message || 'Error deleting note');

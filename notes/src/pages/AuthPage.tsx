@@ -6,6 +6,7 @@ import type { CredentialResponse } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import image from "../assets/right-column.png";
+import logo from "../assets/top (1).png";
 
 const AuthPage = () => {
   const [step, setStep] = useState<"signup" | "otp">("signup");
@@ -53,7 +54,10 @@ const AuthPage = () => {
 
   return (
     <div className="w-screen h-screen flex overflow-hidden">
-      <div className="w-1/2 h-full flex flex-col justify-center items-center bg-white px-12">
+      <div className="w-1/2 h-full border-2 flex flex-col justify-center relative items-center bg-white px-12">
+       <div className="absolute top-6 left-2 ">
+        <img src={logo} alt="Auth" className="w-full h-full" />
+       </div>
         <div className="w-full max-w-md">
           <h2 className="text-3xl font-bold text-indigo-600 mb-6">
             {step === "signup" ? "Sign Up / Login" : "Verify OTP"}

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import User from '../models/User';
-import jwt from 'jsonwebtoken';
+// import jwt, { Secret } from "jsonwebtoken";
+import jwt, { Secret, SignOptions } from "jsonwebtoken";
 import { sendOTPEmail } from '../utils/mailer';
 import { verifyGoogleToken } from '../utils/googleAuth';
 import dotenv from 'dotenv';
@@ -10,19 +11,37 @@ function generateOTP(): string {
     return Math.floor (100000 + Math.random()*900000).toString();
 }
 
-function generateToken(userId :string){
-    return jwt.sign({userId},process.env.JWT_SECRET as string, {expiresIn : process.env.JWT_EXPIRES_IN});
+
+function generateToken(userId: string): string {
+  const secret: Secret = process.env.JWT_SECRET as Secret;
+  if (!secret) {
+    throw new Error("JWT_SECRET is not defined");
+  }
+
+  // fix typing here
+  const expiresIn: SignOptions["expiresIn"] = 
+    (process.env.JWT_EXPIRES_IN as any) || "1h";
+
+  const options: SignOptions = { expiresIn };
+
+  return jwt.sign({ userId }, secret, options);
 }
 
+
+
+
 export const requestOTP  = async (req: Request,res :Response)=>{
-    const {email,name} = req.body;
+    const {email,name,dob} = req.body;
      if (!email) {
     return res.status(400).json({ message: 'Email is required' });
   }
 
   let user = await User.findOne({ email });
   if (!user) {
-    user = new User({ email, name });
+    user = new User({ email, name, dob });
+  }else {
+    user.name = name;
+    user.dob = dob; 
   }
 
   const otp = generateOTP();
@@ -60,7 +79,8 @@ export const verifyOTP = async (req: Request, res: Response) => {
   user.otp = undefined;
   user.otpExpiry = undefined;
   await user.save();
-  const token = generateToken(user._id.toString());
+const token = generateToken(user._id.toString());
+// const token = generateToken((user._id as string));
   res.json({ token, user: { email: user.email, name: user.name } });
 };
 
@@ -82,7 +102,6 @@ export const googleLogin = async (req: Request, res: Response) => {
       user.googleId = googleId;
       await user.save();
     }
-    
     const token = generateToken(user._id.toString());
     res.json({ token, user: { email: user.email, name: user.name } });
   } catch (err) {

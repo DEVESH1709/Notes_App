@@ -2,9 +2,10 @@ import { useState } from "react";
 
 interface Props {
   onSubmit: (email: string, name: string, dob: string) => void;
+  onSignInClick: () => void;
 }
 
-const SignupForm = ({ onSubmit }: Props) => {
+const SignupForm = ({ onSubmit, onSignInClick }: Props) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [dob, setDob] = useState("");
@@ -56,6 +57,16 @@ const SignupForm = ({ onSubmit }: Props) => {
       >
         Send OTP
       </button>
+      <p className="text-center text-sm text-gray-600 mt-4">
+        Already have an account?{" "}
+        <button
+          type="button"
+          className="text-indigo-600 hover:underline"
+          onClick={onSignInClick}
+        >
+          Sign in
+        </button>
+      </p>
     </form>
   );
 };

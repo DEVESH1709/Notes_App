@@ -1,5 +1,6 @@
 import { useState } from "react";
 import SignupForm from "../components/SignupForm";
+import SigninForm from "../components/SigninForm"
 import OTPForm from "../components/OTPForm";
 import { GoogleLogin } from "@react-oauth/google";
 import type { CredentialResponse } from "@react-oauth/google";
@@ -8,8 +9,10 @@ import api from "../api";
 import image from "../assets/right-column.png";
 import logo from "../assets/top (1).png";
 
+
 const AuthPage = () => {
-  const [step, setStep] = useState<"signup" | "otp">("signup");
+const [step, setStep] = useState<"signup" | "otp" | "signin">("signup");
+
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [dob, setDob] = useState("");
@@ -63,8 +66,21 @@ const AuthPage = () => {
             {step === "signup" ? "Sign Up / Login" : "Verify OTP"}
           </h2>
 
-          {step === "signup" && <SignupForm onSubmit={handleSignup} />}
+         {step === "signup" && (
+  <SignupForm
+    onSubmit={handleSignup}
+    onSignInClick={() => setStep("signin")}
+  />
+)}
           {step === "otp" && <OTPForm onSubmit={handleVerify} />}
+
+{step === "signin" && (
+  <SigninForm 
+    onSubmit={( otp) => handleVerify(otp)} 
+    onResendOtp={(email) => api.post("/api/auth/request-otp", { email })}
+    onBackToSignup={() => setStep("signup")}
+  />
+)}
 
           <div className="mt-6 border-t pt-6 text-center">
             <h3 className="text-gray-600 mb-3 font-medium">Or continue with</h3>

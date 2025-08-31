@@ -192,31 +192,31 @@ const AuthPage = () => {
       }
     }
   };
-
   return (
-    <div className="w-screen h-screen flex overflow-hidden">
-      <div className="w-1/2 h-full border-2 flex flex-col justify-center relative items-center bg-white px-12">
-       <div className="absolute top-6 left-2 ">
-        <img src={logo} alt="Auth" className="w-full h-full" />
-       </div>
-        <div className="w-full max-w-md">
-          <h2 className="text-3xl font-bold text-indigo-600 mb-6">
-            {step === "signup" ? "Sign Up / Login" : "Verify OTP"}
-          </h2>
+  <div className="w-screen h-screen flex flex-col md:flex-row overflow-hidden">
+    <div className="w-full md:w-1/2 h-full flex flex-col justify-center items-center bg-white px-6 sm:px-12 relative">
+      <div className="absolute top-6 left-6 md:left-4 flex items-center space-x-2">
+        <img src={logo} alt="Auth Logo" className="w-100 h-8" />
+      </div>
 
-         {step === "signup" && (
+      <div className="w-full max-w-md mt-12 md:mt-0">
+        <h2 className="text-3xl font-bold text-indigo-600 mb-6 text-center md:text-left">
+          {step === "signup" ? "Sign up" : step === "otp" ? "Verify OTP" : "Sign in"}
+        </h2>
+
+        {step === "signup" && (
           <SignupForm
             onSubmit={handleSignup}
             onSignInClick={() => {
-              setEmail(email); 
+              setEmail(email);
               setStep("signin");
             }}
           />
         )}
-        
+
         {step === "otp" && (
-          <OTPForm 
-            onSubmit={(otp) => handleVerify(email, otp)} 
+          <OTPForm
+            onSubmit={(otp) => handleVerify(email, otp)}
             onResendOtp={() => handleResendOtp(email)}
             email={email}
             isNewUser={isNewUser}
@@ -231,27 +231,28 @@ const AuthPage = () => {
             initialEmail={email}
           />
         )}
-
-          <div className="mt-6 border-t pt-6 text-center">
-            <h3 className="text-gray-600 mb-3 font-medium">Or continue with</h3>
-            <div className="flex justify-center">
-              <GoogleLogin
-                onSuccess={handleGoogleSuccess}
-                onError={() => console.log("Google Login Failed")}
-              />
-            </div>
+        <div className="mt-6 border-t pt-6 text-center">
+          <h3 className="text-gray-600 mb-3 font-medium">Or continue with</h3>
+          <div className="flex justify-center">
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => console.log("Google Login Failed")}
+            />
           </div>
         </div>
       </div>
-      <div className="w-1/2 h-full">
-        <img
-          src={image}
-          alt="Wallpaper"
-          className="w-full h-full object-cover"
-        />
-      </div>
     </div>
-  );
+
+    <div className="hidden md:block w-1/2 h-full">
+      <img
+        src={image}
+        alt="Wallpaper"
+        className="w-full h-full object-cover"
+      />
+    </div>
+  </div>
+);
+
 };
 
 export default AuthPage;

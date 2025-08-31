@@ -4,7 +4,6 @@ export interface INote extends Document {
     userId : mongoose.Types.ObjectId;
     content : string ;
     createAt :Date;
-
 }
 
 const noteSchema : Schema = new mongoose.Schema({

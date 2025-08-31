@@ -4,10 +4,16 @@ import api from "../api";
 import NoteItem from "../components/NoteItem";
 import logo2 from "../assets/top (2).png";
 
+interface User {
+  name: string;
+  email: string;
+}
+
 const Dashboard = () => {
   const [notes, setNotes] = useState<{ _id: string; content: string }[]>([]);
   const [newNote, setNewNote] = useState("");
   const [showTextarea, setShowTextarea] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,8 +22,33 @@ const Dashboard = () => {
       navigate("/");
       return;
     }
+    
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      try {
+        const parsedUser = JSON.parse(userData);
+        setUser(parsedUser);
+      } catch (err) {
+        console.error("Error parsing user data:", err);
+      }
+    }
+
+    fetchUserData();
     fetchNotes();
   }, [navigate]);
+
+  const fetchUserData = async () => {
+    try {
+      const res = await api.get("/api/auth/me");
+      console.log("User data:", res.data); 
+      setUser({
+        name: res.data.name,
+        email: res.data.email
+      });
+    } catch (err) {
+      console.error("Failed to fetch user data:", err);
+    }
+  };
 
   const handleSaveNote = async () => {
     if (!newNote.trim()) return;
@@ -40,8 +71,6 @@ const Dashboard = () => {
     }
   };
 
-  
-
   const handleDelete = async (id: string) => {
     try {
       await api.delete(`/api/notes/${id}`);
@@ -53,6 +82,7 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate("/");
   };
 
@@ -61,7 +91,10 @@ const Dashboard = () => {
       <div className="flex items-center justify-between px-6 py-4 bg-white shadow">
         <div className="flex items-center space-x-2">
           <img src={logo2} alt="Dashboard Logo" className="w-8 h-8" />
-          <h1 className="text-lg font-semibold">Dashboard</h1>
+          <div>
+            <h1 className="text-lg font-semibold">Welcome, {user?.name || 'User'}</h1>
+            {user?.email && <p className="text-sm text-gray-600">{user.email}</p>}
+          </div>
         </div>
         <button
           onClick={handleLogout}

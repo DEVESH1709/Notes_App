@@ -8,7 +8,6 @@ import noteRoutes from "./routes/noteRoutes"
 dotenv.config();
 const app = express();
 
-// Basic CORS setup - update with your frontend URL in production
 app.use(cors({
     origin: process.env.FRONTEND_URL || 'http://localhost:5173',
     credentials: true
@@ -16,23 +15,26 @@ app.use(cors({
 
 app.use(express.json());
 
-// API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/notes', noteRoutes);
 
-// Health check endpoint
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok' });
 });
 
-// Serve static files from the public directory
-const publicPath = path.resolve(__dirname, '..', 'public');
-app.use(express.static(publicPath));
+if (process.env.NODE_ENV === 'production') {
+    const publicPath = path.resolve(__dirname, '..', 'public');
 
-// Serve index.html for all other GET requests
-app.get('*', (req, res) => {
-    const indexPath = path.join(publicPath, 'index.html');
-    res.sendFile(indexPath);
-});
+    app.use(express.static(publicPath));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(publicPath, 'index.html'), (err) => {
+            if (err) {
+                console.error('Error sending file:', err);
+                res.status(500).send('Error loading the application');
+            }
+        });
+    });
+}
 
 export default app;

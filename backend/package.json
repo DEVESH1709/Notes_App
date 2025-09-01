@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
-    "build": "cd ../notes && npm install && npm run build && cd ../backend && tsc",
+    "build:frontend": "cd ../notes && npm install && npm run build && cd ../backend && mkdir -p public && cp -r ../notes/dist/* public/",
+    "build:backend": "tsc",
+    "build": "npm run build:frontend && npm run build:backend",
     "postinstall": "npm run build"
   },
   "keywords": [],

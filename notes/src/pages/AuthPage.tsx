@@ -247,7 +247,7 @@ const AuthPage = () => {
       <img
         src={image}
         alt="Wallpaper"
-        className="w-full h-full object-cover"
+        className="w-full h-full p-2 rounded-lg object-cover"
       />
     </div>
   </div>

@@ -48,7 +48,7 @@ const SignupForm = ({ onSubmit, onSignInClick }: Props) => {
           value={dob}
           onChange={(e) => setDob(e.target.value)}
           className="peer w-full px-4 pt-5 pb-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-          placeholder=" "
+          placeholder=""
         />
         <label
           htmlFor="dob"

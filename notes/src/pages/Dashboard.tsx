@@ -42,7 +42,18 @@ const Dashboard = () => {
       const token = localStorage.getItem('token');
       console.log('Current token:', token);
       
-      const res = await api.get("/api/auth/me");
+      if (!token) {
+        console.error('No token found in localStorage');
+        navigate('/login');
+        return;
+      }
+
+      const res = await api.get("/api/auth/me", {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
       console.log("User data response:", res); 
       
       if (res.data) {
@@ -57,6 +68,11 @@ const Dashboard = () => {
         response: err.response?.data,
         status: err.response?.status
       });
+      // If token is invalid, clear it and redirect to login
+      if (err.response?.status === 401 || err.response?.status === 403) {
+        localStorage.removeItem('token');
+        navigate('/login');
+      }
     }
   };
 

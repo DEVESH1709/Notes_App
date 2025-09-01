@@ -23,6 +23,15 @@ A full-stack notes application with OTP authentication and Google login.
 
 ---
 
+
+## Tech Stack
+
+- **Frontend:** React, Vite, TypeScript, Tailwind CSS
+- **Backend:** Node.js, Express, TypeScript, MongoDB (Mongoose)
+- **Auth:** JWT, Google OAuth
+- **Email:** Nodemailer (Gmail)
+
+
 ## Folder Structure
 
 ```
@@ -76,6 +85,14 @@ npm start
 
 ## 2. Frontend Setup
 
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/DEVESH1709/Notes_App.git
+cd Notes_App
+```
+
+---
 ### A. Configure Environment Variables
 
 Create `notes/.env`:

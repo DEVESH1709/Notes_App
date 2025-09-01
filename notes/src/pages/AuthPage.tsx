@@ -200,7 +200,7 @@ const AuthPage = () => {
       </div>
 
       <div className="w-full max-w-md mt-12 md:mt-0">
-        <h2 className="text-3xl font-bold text-indigo-600 mb-6 text-center md:text-left">
+        <h2 className="text-4xl font-bold text-indigo-600 mb-6 text-center">
           {step === "signup" ? "Sign up" : step === "otp" ? "Verify OTP" : "Sign in"}
         </h2>
 

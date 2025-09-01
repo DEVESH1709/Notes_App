@@ -16,7 +16,10 @@ const SignupForm = ({ onSubmit, onSignInClick }: Props) => {
   };
 
   return (
+
+   
     <form onSubmit={handleSubmit} className="space-y-6">
+       <h1 className="text-gray-400 text-center">Sign up to enjoy the feature of HD</h1>
       <div className="relative">
         <input
           type="text"

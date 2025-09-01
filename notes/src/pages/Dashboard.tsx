@@ -39,14 +39,24 @@ const Dashboard = () => {
 
   const fetchUserData = async () => {
     try {
+      const token = localStorage.getItem('token');
+      console.log('Current token:', token);
+      
       const res = await api.get("/api/auth/me");
-      console.log("User data:", res.data); 
-      setUser({
-        name: res.data.name,
-        email: res.data.email
+      console.log("User data response:", res); 
+      
+      if (res.data) {
+        console.log("Setting user data:", res.data);
+        setUser(res.data);
+      } else {
+        console.error("No user data in response");
+      }
+    } catch (err: any) {
+      console.error("Failed to fetch user data:", {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status
       });
-    } catch (err) {
-      console.error("Failed to fetch user data:", err);
     }
   };
 
